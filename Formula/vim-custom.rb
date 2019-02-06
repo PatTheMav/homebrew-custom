@@ -41,7 +41,7 @@ class VimCustom < Formula
   conflicts_with "macvim",
     :because => "vim-custom and macvim both install vi* binaries"
 
-  conflicts_with "vim"
+  conflicts_with "vim",
     :because => "vim-custom and vim both install vi* binaries"
 
   def install
