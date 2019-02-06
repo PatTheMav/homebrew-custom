@@ -1,4 +1,4 @@
-class Ffmpeg < Formula
+class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
   url "https://ffmpeg.org/releases/ffmpeg-4.1.tar.xz"
@@ -82,6 +82,9 @@ class Ffmpeg < Formula
   depends_on "webp" => :optional
   depends_on "zeromq" => :optional
   depends_on "zimg" => :optional
+
+  conflicts_with "ffmpeg",
+    :because => "ffmpeg-custom and ffmpeg both install ffmpeg binary"
 
   def install
     args = %W[
