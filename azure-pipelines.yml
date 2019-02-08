@@ -1,3 +1,13 @@
+trigger: none
+#  batch: true
+#  paths:
+#    exclude:
+#    - README.md
+pr:
+  autoCancel: true
+  paths:
+    exclude:
+    - README.md
 jobs:
 - job: macOS
   pool:
@@ -8,8 +18,16 @@ jobs:
         sudo xcode-select --switch /Applications/Xcode_10.1.app/Contents/Developer
         brew update
         HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/patthemav/custom"
+        BINTRAY_URL="https://dl.bintray.com/patthemav/bottles-custom"
         mkdir -p "$HOMEBREW_TAP_DIR"
         rm -rf "$HOMEBREW_TAP_DIR"
         ln -s "$PWD" "$HOMEBREW_TAP_DIR"
-        brew test-bot
+        brew test-bot --root-url=${BINTRAY_URL}
+        brew test-bot --ci-upload --dry-run --root-url=${BINTRAY_URL} --git-name=${HOMEBREW_GITHUB_USER} --git-email=${HOMEBREW_GITHUB_EMAIL} --bintray-org=${HOMEBREW_BINTRAY_USER} --verbose
       displayName: Run brew test-bot
+      env:
+        HOMEBREW_GITHUB_USER: $(github.user)
+        HOMEBREW_GITHUB_EMAIL: $(github.email)
+        HOMEBREW_GITHUB_API_TOKEN: $(github.token)
+        HOMEBREW_BINTRAY_USER: $(bintray.user)
+        HOMEBREW_BINTRAY_KEY: $(bintray.key)
