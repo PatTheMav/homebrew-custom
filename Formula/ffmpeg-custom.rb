@@ -1,16 +1,14 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.1.tar.xz"
-  sha256 "a38ec4d026efb58506a99ad5cd23d5a9793b4bf415f2c4c2e9c1bb444acd1994"
-  revision 5
+  url "https://ffmpeg.org/releases/ffmpeg-4.1.1.tar.xz"
+  sha256 "373749824dfd334d84e55dff406729edfd1606575ee44dd485d97d45ea4d2d86"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   # bottle do
-  #   rebuild 1
-  #   sha256 "2ddcdf6d1a06694eaf262c8a06a2d919eeb3047984e77449761a9c7834b7135b" => :mojave
-  #   sha256 "6d04eca21b46264566102aaeae2d030776f71bc75a2587c8a5b9600e7b9c711b" => :high_sierra
-  #   sha256 "bacf852c966847ef0a54e6c4a8e5e78920f898c6e734b68be07f3f6815fa1a3d" => :sierra
+  #   sha256 "468153bac4b90b445fa5c6adfb70ec3213ebc0f63c7a97a6b2a1649d9c32a786" => :mojave
+  #   sha256 "152657e2793e9105dacf8badf787f826734b6407741b1e764d91502837c84647" => :high_sierra
+  #   sha256 "c495601c6e1c14b00d025218a9228706723b3f13f371ec98a7a00eb72066706f" => :sierra
   # end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
@@ -25,6 +23,7 @@ class FfmpegCustom < Formula
   option "with-openh264", "Enable OpenH264 library"
   option "with-openjpeg", "Enable JPEG 2000 image format"
   option "with-openssl", "Enable SSL support"
+  option "with-gnutls", "Enable GNU-TLS support (OpenSSL alternative)"
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-rubberband", "Enable rubberband library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
@@ -57,6 +56,7 @@ class FfmpegCustom < Formula
   depends_on "freetype" => :optional
   depends_on "frei0r" => :optional
   depends_on "game-music-emu" => :optional
+  depends_on "gnutls" => :optional
   depends_on "libass" => :optional
   depends_on "libbluray" => :optional
   depends_on "libbs2b" => :optional
@@ -137,6 +137,7 @@ class FfmpegCustom < Formula
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libsrt" if build.with? "srt"
     args << "--enable-libssh" if build.with? "libssh"
+    args << "--enable-gnutls" if build.with? "gnutls"
     args << "--enable-libtesseract" if build.with? "tesseract"
     args << "--enable-libtwolame" if build.with? "two-lame"
     args << "--enable-libvidstab" if build.with? "libvidstab"
