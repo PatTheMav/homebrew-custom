@@ -4,6 +4,9 @@ trigger: none
 #    exclude:
 #    - README.md
 pr:
+  branches:
+    include:
+    - master
   autoCancel: true
   paths:
     exclude:
@@ -18,7 +21,7 @@ jobs:
         sudo xcode-select --switch /Applications/Xcode_10.1.app/Contents/Developer
         brew update
         HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/patthemav/custom"
-        BINTRAY_URL="https://dl.bintray.com/patthemav/bottles-custom"
+        TAP_BOTTLE_DOMAIN="https://dl.bintray.com/patthemav"
         mkdir -p "$HOMEBREW_TAP_DIR"
         rm -rf "$HOMEBREW_TAP_DIR"
         ln -s "$PWD" "$HOMEBREW_TAP_DIR"
