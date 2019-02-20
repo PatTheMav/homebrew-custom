@@ -15,7 +15,8 @@ pr:
     exclude:
     - README.md
 jobs:
-- job: macOS_Build
+- job: macOS_PR
+  condition: and(failed(), eq(variables['Build.Reason'], 'PullRequest'))
   pool:
     vmImage: macOS-10.13
   steps:
@@ -36,8 +37,7 @@ jobs:
         HOMEBREW_GITHUB_API_TOKEN: $(github.token)
         HOMEBREW_BINTRAY_USER: $(bintray.user)
         HOMEBREW_BINTRAY_KEY: $(bintray.key)
-- job: macOS_Deploy
-  dependsOn: macOS_Build
+- job: macOS_BUILD
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   pool:
     vmImage: macOS-10.13
@@ -51,6 +51,7 @@ jobs:
         mkdir -p "$HOMEBREW_TAP_DIR"
         rm -rf "$HOMEBREW_TAP_DIR"
         ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+        brew test-bot --root-url=${BINTRAY_URL}
         brew test-bot --ci-upload --root-url=${BINTRAY_URL} --git-name=${HOMEBREW_GITHUB_USER} --git-email=${HOMEBREW_GITHUB_EMAIL} --bintray-org=${HOMEBREW_BINTRAY_USER} --verbose
       displayName: Run brew test-bot (CI-Upload)
       env:
