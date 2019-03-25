@@ -16,7 +16,7 @@ pr:
     - README.md
 jobs:
 - job: macOS_PR
-  condition: and(failed(), eq(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
   pool:
     vmImage: macOS-10.13
   steps:
