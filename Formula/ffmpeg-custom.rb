@@ -22,7 +22,6 @@ class FfmpegCustom < Formula
   option "with-opencore-amr", "Enable Opencore AMR NR/WB audio format"
   option "with-openh264", "Enable OpenH264 library"
   option "with-openjpeg", "Enable JPEG 2000 image format"
-  option "with-openssl", "Enable SSL support"
   option "with-gnutls", "Enable GNU-TLS support (OpenSSL alternative)"
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-rubberband", "Enable rubberband library"
@@ -71,7 +70,6 @@ class FfmpegCustom < Formula
   depends_on "opencore-amr" => :optional
   depends_on "openh264" => :optional
   depends_on "openjpeg" => :optional
-  depends_on "openssl" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "rubberband" => :optional
   depends_on "speex" => :optional
@@ -87,6 +85,9 @@ class FfmpegCustom < Formula
     :because => "ffmpeg-custom and ffmpeg both install ffmpeg binary"
 
   def install
+    # https://bitbucket.org/multicoreware/x265/issues/514/wrong-code-generated-on-macos-1015
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+
     args = %W[
       --prefix=#{prefix}
       --enable-shared
@@ -108,8 +109,6 @@ class FfmpegCustom < Formula
       --enable-libx265
       --enable-libxvid
       --enable-lzma
-      --enable-videotoolbox
-      --enable-opencl
       --disable-libjack
       --disable-indev=jack
     ]
