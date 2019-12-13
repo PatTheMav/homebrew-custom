@@ -38,4 +38,4 @@ jobs:
           echo "GIT-URL:   https://www.github.com/${GITHUB_REPOSITORY}"
           echo "COMMIT-ID: ${GITHUB_SHA}"
           brew test-bot
-          ls *.bottle.json || echo "==> No bottle created here"
+          ls *.bottle.json 2>/dev/null || echo "==> No bottle created here"
