@@ -3,8 +3,8 @@ name: ci_pull
 on:
   pull_request:
     paths:
-      - '!**.md' 
-    branches: 
+      - '!**.md'
+    branches:
       - master
 
 jobs:
@@ -24,7 +24,8 @@ jobs:
         run: |
           set -ex
           echo "GIT-URL:   https://www.github.com${GITHUB_REPOSITORY}"
-          echo "COMMIT-ID: ${GITHUB_SHA}" 
+          echo "COMMIT-ID: ${GITHUB_SHA}"
+          HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/${GITHUB_REPOSITORY}"
           brew test-bot
           ls *.bottle.json || echo "==> No bottle created here"
         env:
