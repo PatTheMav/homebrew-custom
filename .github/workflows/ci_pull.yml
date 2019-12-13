@@ -18,24 +18,24 @@ jobs:
       - name: Tap custom repository
         if: success()
         shell: bash
+        env:
+          HOMEBREW_TAP_DIR: join('/usr/local/Homebrew/Library/Taps/', ${{ github.repository }})
         run: |
-          HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/${GITHUB_REPOSITORY}"
           mkdir -p "${HOMEBREW_TAP_DIR}"
           rm -rf "{$HOMEBREW_TAP_DIR}"
           ln -s "${PWD}" "${HOMEBREW_TAP_DIR}"
       - name: Run brew test-bot
         if: success()
         shell: bash
-        run: |
-          set -ex
-          echo "GIT-URL:   https://www.github.com${GITHUB_REPOSITORY}"
-          echo "COMMIT-ID: ${GITHUB_SHA}"
-          HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/${GITHUB_REPOSITORY}"
-          brew test-bot
-          ls *.bottle.json || echo "==> No bottle created here"
         env:
           HOMEBREW_GITHUB_USER: ${{ secrets.GITHUB_USER }}
           HOMEBREW_GITHUB_EMAIL: ${{ secrets.GITHUB_EMAIL }}
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           HOMEBREW_BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          HOMEBREW_TAP_DIR: join('/usr/local/Homebrew/Library/Taps/', ${{ github.repository }})
+        run: |
+          echo "GIT-URL:   https://www.github.com/${GITHUB_REPOSITORY}"
+          echo "COMMIT-ID: ${GITHUB_SHA}"
+          brew test-bot
+          ls *.bottle.json || echo "==> No bottle created here"
