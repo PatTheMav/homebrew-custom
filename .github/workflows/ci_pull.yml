@@ -2,16 +2,21 @@ name: ci_pull
 
 on:
   pull_request:
-    paths:
-      - '!**.md'
+    paths-ignore:
+      - '**.md'
     branches:
       - master
 
 jobs:
-  build_macos:
+  build:
+    name: Build
+    runs-on: [macos-latest]
     steps:
-      - name: Tap custom repository
+      - name: Checkout
         if: github.event_name == 'pull_request'
+        uses: actions/checkout@v1
+      - name: Tap custom repository
+        if: success()
         shell: bash
         run: |
           HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/${GITHUB_REPOSITORY}"
@@ -34,5 +39,3 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           HOMEBREW_BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-    name: "CI: macOS pull request"
-    runs-on: [macos-latest]
