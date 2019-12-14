@@ -19,7 +19,7 @@ jobs:
         if: success()
         shell: bash
         env:
-          HOMEBREW_TAP_DIR: ${{ join('/usr/local/Homebrew/Library/Taps/', ${{ github.repository }}) }}
+          HOMEBREW_TAP_DIR: ${{ join('/usr/local/Homebrew/Library/Taps/', github.repository) }}
         run: |
           mkdir -p "${HOMEBREW_TAP_DIR}"
           rm -rf "{$HOMEBREW_TAP_DIR}"
@@ -33,7 +33,7 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           HOMEBREW_BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-          HOMEBREW_TAP_DIR: ${{ join('/usr/local/Homebrew/Library/Taps/', ${{ github.repository }}) }}
+          HOMEBREW_TAP_DIR: ${{ join('/usr/local/Homebrew/Library/Taps/', github.repository) }}
         run: |
           echo "GIT-URL:   https://www.github.com/${GITHUB_REPOSITORY}"
           echo "COMMIT-ID: ${GITHUB_SHA}"
