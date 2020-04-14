@@ -2,32 +2,20 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.0450.tar.gz"
-  sha256 "179fe06c9a4a6fabe18befd30ead1c4c739996dc3755dee7765787bbbd3774e0"
+  url "https://github.com/vim/vim/archive/v8.2.0550.tar.gz"
+  sha256 "7a11d8c7e927e8fdc5182e1b8c6e8657a57e98740f9690d23afddcb3a3081e9b"
   head "https://github.com/vim/vim.git"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  LANGUAGES_OPTIONAL = %w[lua python@2 tcl].freeze
-  LANGUAGES_DEFAULT  = %w[python].freeze
-
-  option "with-python@2", "Build vim with python@2 instead of python[3] support"
-  LANGUAGES_OPTIONAL.each do |language|
-    option "with-#{language}", "Build vim with #{language} support"
-  end
-  LANGUAGES_DEFAULT.each do |language|
-    option "without-#{language}", "Build vim without #{language} support"
-  end
-
-  depends_on "perl"
-  depends_on "ruby"
+  depends_on "perl" => :optional
+  depends_on "ruby" => :optional
   depends_on :x11 if build.with? "client-server"
-  depends_on "python" => :recommended if build.without? "python@2"
+  depends_on "python" => :optional
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
-  depends_on "python@2" => :optional
 
   conflicts_with "ex-vi",
     :because => "vim-custom and ex-vi both install bin/ex and bin/view"
@@ -47,21 +35,11 @@ class VimCustom < Formula
     # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
 
-    opts = ["--enable-perlinterp", "--enable-rubyinterp"]
+    opts = []
 
-    (LANGUAGES_OPTIONAL + LANGUAGES_DEFAULT).each do |language|
-      feature = { "python" => "python3", "python@2" => "python" }
-      if build.with? language
-        opts << "--enable-#{feature.fetch(language, language)}interp"
-      end
-    end
-
-    if opts.include?("--enable-pythoninterp") && opts.include?("--enable-python3interp")
-      # only compile with either python or python@2 support, but not both
-      # (if vim74 is compiled with +python3/dyn, the Python[3] library lookup segfaults
-      # in other words, a command like ":py3 import sys" leads to a SEGV)
-      opts -= %w[--enable-python3interp]
-    end
+    opts << "--enable-perlinterp" if build.with? "perl"
+    opts << "--enable-rubyinterp" if build.with? "ruby"
+    opts << "--enable-python3interp" if build.with? "python"
 
     opts << "--disable-nls" if build.without? "gettext"
     opts << "--enable-gui=no"
