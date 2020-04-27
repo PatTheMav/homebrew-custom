@@ -10,10 +10,10 @@ class VimCustom < Formula
   option "with-client-server", "Enable client/server mode"
 
   depends_on :x11 if build.with? "client-server"
-  depends_on "perl" => :optional
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
+  depends_on "perl" => :optional
   depends_on "python" => :optional
   depends_on "ruby" => :optional
 
@@ -44,7 +44,7 @@ class VimCustom < Formula
     opts << "--disable-nls" if build.without? "gettext"
     opts << "--enable-gui=no"
 
-    opts << build.with? "client-server" ? "--with-x" : "--without-x"
+    opts << build.with?("client-server") ? "--with-x" : "--without-x"
 
     if build.with?("lua") || build.with?("luajit")
       opts << "--enable-luainterp"
