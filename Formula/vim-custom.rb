@@ -9,13 +9,13 @@ class VimCustom < Formula
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  depends_on "perl" => :optional
-  depends_on "ruby" => :optional
   depends_on :x11 if build.with? "client-server"
-  depends_on "python" => :optional
+  depends_on "perl" => :optional
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
+  depends_on "python" => :optional
+  depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
     :because => "vim-custom and ex-vi both install bin/ex and bin/view"
@@ -44,11 +44,7 @@ class VimCustom < Formula
     opts << "--disable-nls" if build.without? "gettext"
     opts << "--enable-gui=no"
 
-    if build.with? "client-server"
-      opts << "--with-x"
-    else
-      opts << "--without-x"
-    end
+    opts << build.with? "client-server" ? "--with-x" : "--without-x"
 
     if build.with?("lua") || build.with?("luajit")
       opts << "--enable-luainterp"
@@ -96,14 +92,7 @@ class VimCustom < Formula
   end
 
   test do
-    if build.with? "python@2"
-      (testpath/"commands.vim").write <<~EOS
-        :python import vim; vim.current.buffer[0] = 'hello world'
-        :wq
-      EOS
-      system bin/"vim", "-T", "dumb", "-s", "commands.vim", "test.txt"
-      assert_equal "hello world", File.read("test.txt").chomp
-    elsif build.with? "python"
+    if build.with? "python"
       (testpath/"commands.vim").write <<~EOS
         :python3 import vim; vim.current.buffer[0] = 'hello python3'
         :wq
@@ -111,8 +100,6 @@ class VimCustom < Formula
       system bin/"vim", "-T", "dumb", "-s", "commands.vim", "test.txt"
       assert_equal "hello python3", File.read("test.txt").chomp
     end
-    if build.with? "gettext"
-      assert_match "+gettext", shell_output("#{bin}/vim --version")
-    end
+    assert_match "+gettext", shell_output("#{bin}/vim --version") if build.with? "gettext"
   end
 end
