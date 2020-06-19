@@ -1,10 +1,11 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.2.3.tar.xz"
-  sha256 "9df6c90aed1337634c1fb026fb01c154c29c82a64ea71291ff2da9aacb9aad31"
+  url "https://ffmpeg.org/releases/ffmpeg-4.3.tar.xz"
+  sha256 "1d0ad06484f44bcb97eba5e93c40bcb893890f9f64aeb43e46cd9bb4cbd6795d"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
+  bottle :unneeded
   # bottle do
   #   sha256 "468153bac4b90b445fa5c6adfb70ec3213ebc0f63c7a97a6b2a1649d9c32a786" => :mojave
   #   sha256 "152657e2793e9105dacf8badf787f826734b6407741b1e764d91502837c84647" => :high_sierra
@@ -30,7 +31,9 @@ class FfmpegCustom < Formula
   option "with-zimg", "Enable z.lib zimg library"
   option "with-srt", "Enable SRT library"
   option "with-libvmaf", "Enable libvmaf scoring library"
-  option "with-aom", "Enable AV1 video codec"
+  option "with-aom", "Enable AOM AV1 video codec"
+  option "with-dav1d", "Enable Dav1d AV1 video codec"
+  option "with-rav1e", "Enable Rav1e AV1 video codec"
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
@@ -48,8 +51,15 @@ class FfmpegCustom < Formula
   depends_on "xvid"
   depends_on "xz"
 
+  unless OS.mac?
+    depends_on "zlib"
+    depends_on "bzip2"
+    depends_on "linuxbrew/xorg/libxv"
+  end
+
   depends_on "aom" => :optional
   depends_on "chromaprint" => :optional
+  depends_on "dav1d" => :optional
   depends_on "fdk-aac" => :optional
   depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
@@ -70,6 +80,7 @@ class FfmpegCustom < Formula
   depends_on "opencore-amr" => :optional
   depends_on "openh264" => :optional
   depends_on "openjpeg" => :optional
+  depends_on "rav1e" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "rubberband" => :optional
   depends_on "speex" => :optional
@@ -85,9 +96,6 @@ class FfmpegCustom < Formula
     :because => "ffmpeg-custom and ffmpeg both install ffmpeg binary"
 
   def install
-    # https://bitbucket.org/multicoreware/x265/issues/514/wrong-code-generated-on-macos-1015
-    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
-
     args = %W[
       --prefix=#{prefix}
       --enable-shared
@@ -113,9 +121,16 @@ class FfmpegCustom < Formula
       --disable-indev=jack
     ]
 
+    if OS.mac?
+      args << "--enable-opencl"
+      args << "--enable-videotoolbox"
+    end
+
+    args << "--disable-htmlpages"
     args << "--enable-chromaprint" if build.with? "chromaprint"
     args << "--enable-frei0r" if build.with? "frei0r"
     args << "--enable-libaom" if build.with? "aom"
+    args << "--enable-libdav1d" if build.with? "dav1d"
     args << "--enable-libass" if build.with? "libass"
     args << "--enable-libbluray" if build.with? "libbluray"
     args << "--enable-libbs2b" if build.with? "libbs2b"
@@ -129,6 +144,7 @@ class FfmpegCustom < Formula
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.with? "opencore-amr"
     args << "--enable-libopenh264" if build.with? "openh264"
     args << "--enable-librsvg" if build.with? "librsvg"
+    args << "--enable-librav1e" if build.with? "rav1e"
     args << "--enable-librtmp" if build.with? "rtmpdump"
     args << "--enable-librubberband" if build.with? "rubberband"
     args << "--enable-libsoxr" if build.with? "libsoxr"
@@ -155,6 +171,11 @@ class FfmpegCustom < Formula
     # These librares are GPL-incompatible, and require ffmpeg be built with
     # the "--enable-nonfree" flag, which produces unredistributable libraries
     args << "--enable-nonfree" if build.with?("fdk-aac") || build.with?("openssl")
+
+    if build.with? "opencore-amr"
+      args << "--enable-libopencore-amrnb"
+      args << "--enable-libopencore-amrwb"
+    end
 
     system "./configure", *args
     system "make", "install"
