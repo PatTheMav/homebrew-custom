@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.1300.tar.gz"
-  sha256 "aca316c45342061fa5103abc1771f6c8124d9fe4f2f95d2fd4e4be4a76e9048e"
+  url "https://github.com/vim/vim/archive/v8.2.1600.tar.gz"
+  sha256 "f684ec030f2189a3a021a19aea76be7eded196550cb6bff1bb8e8f57720fd592"
   head "https://github.com/vim/vim.git"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
@@ -18,13 +18,13 @@ class VimCustom < Formula
   depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
-    :because => "vim-custom and ex-vi both install bin/ex and bin/view"
+    because: "vim-custom and ex-vi both install bin/ex and bin/view"
 
   conflicts_with "macvim",
-    :because => "vim-custom and macvim both install vi* binaries"
+    because: "vim-custom and macvim both install vi* binaries"
 
   conflicts_with "vim",
-    :because => "vim-custom and vim both install vi* binaries"
+    because: "vim-custom and vim both install vi* binaries"
 
   def install
     ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
