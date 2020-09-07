@@ -93,7 +93,7 @@ class FfmpegCustom < Formula
   depends_on "zimg" => :optional
 
   conflicts_with "ffmpeg",
-    :because => "ffmpeg-custom and ffmpeg both install ffmpeg binary"
+    because: "ffmpeg-custom and ffmpeg both install ffmpeg binary"
 
   def install
     args = %W[
@@ -185,7 +185,7 @@ class FfmpegCustom < Formula
     bin.install Dir["tools/*"].select { |f| File.executable? f }
 
     # Fix for Non-executables that were installed to bin/
-    mv bin/"python", pkgshare/"python", :force => true
+    mv bin/"python", pkgshare/"python", force: true
   end
 
   test do
