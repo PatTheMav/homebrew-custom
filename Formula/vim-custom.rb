@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.1700.tar.gz"
-  sha256 "4b32a3ccb1809a00f0ce114916af982f6513d98751864c783b058a98ad6ac900"
+  url "https://github.com/vim/vim/archive/v8.2.1850.tar.gz"
+  sha256 "fbe9050f9db45e5dcedb40e90279ef37902e6cbf918c660e5b6c0abe007f96a0"
   head "https://github.com/vim/vim.git"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
@@ -14,7 +14,7 @@ class VimCustom < Formula
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
-  depends_on "python" => :optional
+  depends_on "python@3.9" => :optional
   depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
@@ -27,7 +27,7 @@ class VimCustom < Formula
     because: "vim-custom and vim both install vi* binaries"
 
   def install
-    ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
 
     # https://github.com/Homebrew/homebrew-core/pull/1046
     ENV.delete("SDKROOT")
