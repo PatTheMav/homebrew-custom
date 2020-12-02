@@ -4,7 +4,7 @@ class FfmpegCustom < Formula
   url "https://ffmpeg.org/releases/ffmpeg-4.3.1.tar.xz"
   sha256 "ad009240d46e307b4e03a213a0f49c11b650e445b1f8be0dda2a9212b34d2ffb"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 2
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   livecheck do
@@ -20,8 +20,9 @@ class FfmpegCustom < Formula
   # end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
+  option "with-decklink", "Enable DeckLink support"
   option "with-fdk-aac", "Enable the Fraunhofer FDK AAC library"
-  option "with-libass", "Enable ASS/SSA subtitle format"
+  option "with-game-music-emu", "Enable Game Music Emu (GME) support"
   option "with-librsvg", "Enable SVG files as inputs via librsvg"
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-libssh", "Enable SFTP protocol via libssh"
@@ -30,20 +31,25 @@ class FfmpegCustom < Formula
   option "with-opencore-amr", "Enable Opencore AMR NR/WB audio format"
   option "with-openh264", "Enable OpenH264 library"
   option "with-openjpeg", "Enable JPEG 2000 image format"
-  option "with-gnutls", "Enable GNU-TLS support (OpenSSL alternative)"
-  option "with-rtmpdump", "Enable RTMP protocol"
+  option "with-openssl", "Enable SSL support"
+  option "with-rav1e", "Enable Rav1e AV1 video codec"
   option "with-rubberband", "Enable rubberband library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
   option "with-zimg", "Enable z.lib zimg library"
   option "with-srt", "Enable SRT library"
   option "with-libvmaf", "Enable libvmaf scoring library"
+  option "with-libxml2", "Enable libxml2 library"
+
+  # Default in other Homebrew distros, optional here
   option "with-aom", "Enable AOM AV1 video codec"
   option "with-dav1d", "Enable Dav1d AV1 video codec"
-  option "with-rav1e", "Enable Rav1e AV1 video codec"
+  option "with-libass", "Enable ASS/SSA subtitle format"
+  option "with-rtmpdump", "Enable RTMP protocol"
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
+  depends_on "texinfo" => :build
 
   depends_on "lame"
   depends_on "libvorbis"
@@ -54,18 +60,15 @@ class FfmpegCustom < Formula
   depends_on "theora"
   depends_on "x264"
   depends_on "x265"
-  depends_on "xvid"
   depends_on "xz"
 
   depends_on "aom" => :optional
-  depends_on "chromaprint" => :optional
   depends_on "dav1d" => :optional
   depends_on "fdk-aac" => :optional
   depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
   depends_on "frei0r" => :optional
   depends_on "game-music-emu" => :optional
-  depends_on "gnutls" => :optional
   depends_on "libass" => :optional
   depends_on "libbluray" => :optional
   depends_on "libbs2b" => :optional
@@ -77,9 +80,11 @@ class FfmpegCustom < Formula
   depends_on "libssh" => :optional
   depends_on "libvidstab" => :optional
   depends_on "libvmaf" => :optional
+  depends_on "libxml2" => :optional
   depends_on "opencore-amr" => :optional
   depends_on "openh264" => :optional
   depends_on "openjpeg" => :optional
+  depends_on "openssl@1.1" => :optional
   depends_on "rav1e" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "rubberband" => :optional
@@ -89,11 +94,11 @@ class FfmpegCustom < Formula
   depends_on "two-lame" => :optional
   depends_on "wavpack" => :optional
   depends_on "webp" => :optional
+  depends_on "xvid" => :optional
   depends_on "zeromq" => :optional
   depends_on "zimg" => :optional
 
   uses_from_macos "bzip2"
-  uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
   conflicts_with "ffmpeg",
@@ -118,6 +123,7 @@ class FfmpegCustom < Formula
       --host-ldflags=#{ENV.ldflags}
       --enable-ffplay
       --enable-gpl
+      --enable-demuxer=dash
       --enable-libmp3lame
       --enable-libopus
       --enable-libsnappy
@@ -126,62 +132,73 @@ class FfmpegCustom < Formula
       --enable-libvpx
       --enable-libx264
       --enable-libx265
-      --enable-libxvid
-      --enable-libxml2
       --enable-lzma
-      --enable-videotoolbox
       --disable-libjack
       --disable-indev=jack
     ]
 
-    args << "--enable-chromaprint" if build.with? "chromaprint"
-    args << "--enable-frei0r" if build.with? "frei0r"
+    if OS.mac?
+      args << "--enable-opencl"
+      args << "--enable-videotoolbox"
+    end
+
+    args << "--disable-htmlpages"
     args << "--enable-libaom" if build.with? "aom"
+    args << "--enable-chromaprint" if build.with? "chromaprint"
     args << "--enable-libdav1d" if build.with? "dav1d"
+    args << "--enable-libfdk-aac" if build.with? "fdk-aac"
+    args << "--enable-libfontconfig" if build.with? "fontconfig"
+    args << "--enable-libfreetype" if build.with? "freetype"
+    args << "--enable-frei0r" if build.with? "frei0r"
+    args << "--enable-libgme" if build.with? "game-music-emu"
     args << "--enable-libass" if build.with? "libass"
     args << "--enable-libbluray" if build.with? "libbluray"
     args << "--enable-libbs2b" if build.with? "libbs2b"
     args << "--enable-libcaca" if build.with? "libcaca"
-    args << "--enable-libfdk-aac" if build.with? "fdk-aac"
-    args << "--enable-libfontconfig" if build.with? "fontconfig"
-    args << "--enable-libfreetype" if build.with? "freetype"
-    args << "--enable-libgme" if build.with? "game-music-emu"
     args << "--enable-libgsm" if build.with? "libgsm"
     args << "--enable-libmodplug" if build.with? "libmodplug"
-    args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.with? "opencore-amr"
-    args << "--enable-libopenh264" if build.with? "openh264"
     args << "--enable-librsvg" if build.with? "librsvg"
+    args << "--enable-libsoxr" if build.with? "libsoxr"
+    args << "--enable-libssh" if build.with? "libssh"
+    args << "--enable-libvidstab" if build.with? "libvidstab"
+    args << "--enable-libvmaf" if build.with? "libvmaf"
+    args << "--enable-libxml2" if build.with? "libxml2"
+    args << "--enable-libopenh264" if build.with? "openh264"
+    args << "--enable-openssl" if build.with? "openssl"
     args << "--enable-librav1e" if build.with? "rav1e"
     args << "--enable-librtmp" if build.with? "rtmpdump"
     args << "--enable-librubberband" if build.with? "rubberband"
-    args << "--enable-libsoxr" if build.with? "libsoxr"
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libsrt" if build.with? "srt"
-    args << "--enable-libssh" if build.with? "libssh"
-    args << "--enable-gnutls" if build.with? "gnutls"
     args << "--enable-libtesseract" if build.with? "tesseract"
     args << "--enable-libtwolame" if build.with? "two-lame"
-    args << "--enable-libvidstab" if build.with? "libvidstab"
-    args << "--enable-libvmaf" if build.with? "libvmaf"
     args << "--enable-libwavpack" if build.with? "wavpack"
     args << "--enable-libwebp" if build.with? "webp"
-    args << "--enable-libzimg" if build.with? "zimg"
+    args << "--enable-libxvid" if build.with? "xvid"
     args << "--enable-libzmq" if build.with? "zeromq"
-    args << "--enable-openssl" if build.with? "openssl"
+    args << "--enable-libzimg" if build.with? "zimg"
+
+    # These librares are GPL-incompatible, and require ffmpeg be built with
+    # the "--enable-nonfree" flag, which produces unredistributable libraries
+    args << "--enable-nonfree" if build.with?("decklink") || build.with?("fdk-aac") || build.with?("openssl")
+
+    if build.with? "decklink"
+      args << "--enable-decklink"
+      args << "--extra-cflags=-I#{HOMEBREW_PREFIX}/include"
+      args << "--extra-ldflags=-L#{HOMEBREW_PREFIX}/include"
+    end
+
+    args << "--enable-version3" if build.with?("opencore-amr") || build.with?("libvmaf")
+
+    if build.with? "opencore-amr"
+      args << "--enable-libopencore-amrnb"
+      args << "--enable-libopencore-amrwb"
+    end
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
       args << "--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp
-    end
-
-    # These librares are GPL-incompatible, and require ffmpeg be built with
-    # the "--enable-nonfree" flag, which produces unredistributable libraries
-    args << "--enable-nonfree" if build.with?("fdk-aac") || build.with?("openssl")
-
-    if build.with? "opencore-amr"
-      args << "--enable-libopencore-amrnb"
-      args << "--enable-libopencore-amrwb"
     end
 
     system "./configure", *args
@@ -193,6 +210,13 @@ class FfmpegCustom < Formula
 
     # Fix for Non-executables that were installed to bin/
     mv bin/"python", share/"python", force: true
+
+    if build.with? "tesseract"
+      opoo <<~EOS
+        The default `tesseract` dependency includes limited language support.
+        To add all supported languages, install the `tesseract-lang` formula.
+      EOS
+    end
   end
 
   test do
