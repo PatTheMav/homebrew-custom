@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.2100.tar.gz"
-  sha256 "5912f417d2818b7c889470d5e357809609eea6a5817491d344f7609d7fdf81fa"
+  url "https://github.com/vim/vim/archive/v8.2.2200.tar.gz"
+  sha256 "bb2025a2d8e271be0c73483d754272b86a95261090a5e9c2e27c1f6ca8ea3c9c"
   head "https://github.com/vim/vim.git"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
@@ -27,7 +27,8 @@ class VimCustom < Formula
     because: "vim-custom and vim both install vi* binaries"
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
+    # Fix error: '__declspec' attributes are not enabled
+    ENV.append_to_cflags "-fdeclspec" if OS.mac?
 
     # https://github.com/Homebrew/homebrew-core/pull/1046
     ENV.delete("SDKROOT")
@@ -37,12 +38,15 @@ class VimCustom < Formula
 
     opts = []
 
+    if build.with? "python"
+      ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
+      opts << "--enable-python3interp" if build.with? "python"
+    end
+
     opts << "--enable-perlinterp" if build.with? "perl"
     opts << "--enable-rubyinterp" if build.with? "ruby"
-    opts << "--enable-python3interp" if build.with? "python"
 
     opts << "--disable-nls" if build.without? "gettext"
-    opts << "--enable-gui=no"
 
     opts << build.with?("client-server") ? "--with-x" : "--without-x"
 
@@ -78,6 +82,7 @@ class VimCustom < Formula
                           "--enable-cscope",
                           "--enable-terminal",
                           "--with-compiledby=Homebrew",
+                          "--enable-gui=no",
                           *opts
 
     system "make"
