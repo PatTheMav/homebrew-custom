@@ -1,21 +1,23 @@
 class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
-  # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.2350.tar.gz"
-  sha256 "6af358c1614680591218b5fc2dde29441689d499381438a5d3b9484d461e7b23"
+  # vim should only be updated every 25 releases on multiples of 25
+  url "https://github.com/vim/vim/archive/v8.2.2475.tar.gz"
+  sha256 "5fac2c95fb79a303982b86928c58ff5288dc6b735f7f2f2b5f3a87bdfa0692bd"
   head "https://github.com/vim/vim.git"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  depends_on :x11 if build.with? "client-server"
+  depends_on "gettext" if OS.linux?
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
   depends_on "python@3.9" => :optional
   depends_on "ruby" => :optional
+
+  uses_from_macos "ncurses"
 
   conflicts_with "ex-vi",
     because: "vim-custom and ex-vi both install bin/ex and bin/view"
@@ -44,8 +46,6 @@ class VimCustom < Formula
     opts << "--enable-rubyinterp" if build.with? "ruby"
 
     opts << "--disable-nls" if build.without? "gettext"
-
-    opts << build.with?("client-server") ? "--with-x" : "--without-x"
 
     if build.with?("lua") || build.with?("luajit")
       opts << "--enable-luainterp"
@@ -76,10 +76,11 @@ class VimCustom < Formula
                           "--mandir=#{man}",
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
+                          "--with-compiledby=Homebrew",
                           "--enable-cscope",
                           "--enable-terminal",
-                          "--with-compiledby=Homebrew",
                           "--enable-gui=no",
+                          "--without-x",
                           *opts
 
     system "make"
