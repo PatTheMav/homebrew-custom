@@ -9,7 +9,6 @@ class VimCustom < Formula
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  depends_on "gettext" if OS.linux?
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
