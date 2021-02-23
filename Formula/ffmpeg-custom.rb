@@ -1,10 +1,9 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.3.1.tar.xz"
-  sha256 "ad009240d46e307b4e03a213a0f49c11b650e445b1f8be0dda2a9212b34d2ffb"
+  url "https://ffmpeg.org/releases/ffmpeg-4.3.2.tar.xz"
+  sha256 "46e4e64f1dd0233cbc0934b9f1c0da676008cad34725113fb7f802cfa84ccddb"
   license "GPL-2.0-or-later"
-  revision 2
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   livecheck do
@@ -101,15 +100,12 @@ class FfmpegCustom < Formula
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "libxv"
+  end
+
   conflicts_with "ffmpeg",
     because: "ffmpeg-custom and ffmpeg both install ffmpeg binary"
-
-  # https://trac.ffmpeg.org/ticket/8760
-  # Remove in next release
-  patch do
-    url "https://github.com/FFmpeg/FFmpeg/commit/7c59e1b0f285cd7c7b35fcd71f49c5fd52cf9315.patch?full_index=1"
-    sha256 "1cbe1b68d70eadd49080a6e512a35f3e230de26b6e1b1c859d9119906417737f"
-  end
 
   def install
     args = %W[
@@ -137,7 +133,7 @@ class FfmpegCustom < Formula
       --disable-indev=jack
     ]
 
-    if OS.mac?
+    on_macos do
       args << "--enable-opencl"
       args << "--enable-videotoolbox"
     end
