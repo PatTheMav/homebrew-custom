@@ -1,8 +1,8 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.3.2.tar.xz"
-  sha256 "46e4e64f1dd0233cbc0934b9f1c0da676008cad34725113fb7f802cfa84ccddb"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.tar.xz"
+  sha256 "06b10a183ce5371f915c6bb15b7b1fffbe046e8275099c96affc29e17645d909"
   license "GPL-2.0-or-later"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
@@ -12,11 +12,6 @@ class FfmpegCustom < Formula
   end
 
   bottle :unneeded
-  # bottle do
-  #   sha256 "468153bac4b90b445fa5c6adfb70ec3213ebc0f63c7a97a6b2a1649d9c32a786" => :mojave
-  #   sha256 "152657e2793e9105dacf8badf787f826734b6407741b1e764d91502837c84647" => :high_sierra
-  #   sha256 "c495601c6e1c14b00d025218a9228706723b3f13f371ec98a7a00eb72066706f" => :sierra
-  # end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
   option "with-decklink", "Enable DeckLink support"
@@ -44,7 +39,6 @@ class FfmpegCustom < Formula
   option "with-aom", "Enable AOM AV1 video codec"
   option "with-dav1d", "Enable Dav1d AV1 video codec"
   option "with-libass", "Enable ASS/SSA subtitle format"
-  option "with-rtmpdump", "Enable RTMP protocol"
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
@@ -85,7 +79,6 @@ class FfmpegCustom < Formula
   depends_on "openjpeg" => :optional
   depends_on "openssl@1.1" => :optional
   depends_on "rav1e" => :optional
-  depends_on "rtmpdump" => :optional
   depends_on "rubberband" => :optional
   depends_on "speex" => :optional
   depends_on "srt" => :optional
@@ -162,7 +155,6 @@ class FfmpegCustom < Formula
     args << "--enable-libopenh264" if build.with? "openh264"
     args << "--enable-openssl" if build.with? "openssl"
     args << "--enable-librav1e" if build.with? "rav1e"
-    args << "--enable-librtmp" if build.with? "rtmpdump"
     args << "--enable-librubberband" if build.with? "rubberband"
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libsrt" if build.with? "srt"
