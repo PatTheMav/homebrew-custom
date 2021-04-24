@@ -2,21 +2,20 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/v8.2.2600.tar.gz"
-  sha256 "24a81608c0f9f794959eefebbbd68b3b01ea93800d00bf9d2115e84931ab65e9"
+  url "https://github.com/vim/vim/archive/v8.2.2800.tar.gz"
+  sha256 "14bda51b9a21c992b5ab39e9ac0f1306717f6a1aacf6892d87d0fb1a40865cf7"
   head "https://github.com/vim/vim.git"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
+  depends_on "ncurses"
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
   depends_on "python@3.9" => :optional
   depends_on "ruby" => :optional
-
-  uses_from_macos "ncurses"
 
   conflicts_with "ex-vi",
     because: "vim-custom and ex-vi both install bin/ex and bin/view"
