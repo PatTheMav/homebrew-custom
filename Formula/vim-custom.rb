@@ -35,9 +35,7 @@ class VimCustom < Formula
 
     opts = []
 
-    on_linux do
-      opts << "--disable-selinux"
-    end
+    opts << "--disable-selinux" if OS.linux?
 
     if build.with? "python"
       ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"

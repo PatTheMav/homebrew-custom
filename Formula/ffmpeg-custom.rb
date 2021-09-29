@@ -47,6 +47,7 @@ class FfmpegCustom < Formula
   depends_on "lame"
   depends_on "libvorbis"
   depends_on "libvpx"
+  depends_on "libxv" if OS.linux?
   depends_on "opus"
   depends_on "sdl2"
   depends_on "snappy"
@@ -54,7 +55,6 @@ class FfmpegCustom < Formula
   depends_on "x264"
   depends_on "x265"
   depends_on "xz"
-
   depends_on "aom" => :optional
   depends_on "dav1d" => :optional
   depends_on "fdk-aac" => :optional
@@ -93,10 +93,6 @@ class FfmpegCustom < Formula
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "libxv"
-  end
-
   conflicts_with "ffmpeg",
     because: "ffmpeg-custom and ffmpeg both install ffmpeg binary"
 
@@ -126,7 +122,7 @@ class FfmpegCustom < Formula
       --disable-indev=jack
     ]
 
-    on_macos do
+    if OS.mac?
       args << "--enable-opencl"
       args << "--enable-videotoolbox"
     end
