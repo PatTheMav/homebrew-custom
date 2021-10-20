@@ -11,8 +11,6 @@ class FfmpegCustom < Formula
     regex(/href=.*?ffmpeg[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  bottle :unneeded
-
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
   option "with-decklink", "Enable DeckLink support"
   option "with-fdk-aac", "Enable the Fraunhofer FDK AAC library"
@@ -182,7 +180,7 @@ class FfmpegCustom < Formula
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
-      args << "--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp
+      args << ("--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp)
     end
 
     system "./configure", *args
