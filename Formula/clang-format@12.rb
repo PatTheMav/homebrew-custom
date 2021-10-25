@@ -60,7 +60,6 @@ class ClangFormatAT12 < Formula
 
     bin.install llvmpath/"build/bin/clang-format" => "clang-format-12"
     bin.install llvmpath/"tools/clang/tools/clang-format/git-clang-format" => "git-clang-format-12"
-    (share/"clang").install Dir[llvmpath/"tools/clang/tools/clang-format/clang-format*"]
   end
 
   test do
