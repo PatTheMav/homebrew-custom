@@ -1,8 +1,8 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.4.1.tar.xz"
-  sha256 "eadbad9e9ab30b25f5520fbfde99fae4a92a1ae3c0257a8d68569a4651e30e02"
+  url "https://ffmpeg.org/releases/ffmpeg-5.0.tar.xz"
+  sha256 "51e919f7d205062c0fd4fae6243a84850391115104ccf1efc451733bc0ac7298"
   license "GPL-2.0-or-later"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
@@ -41,8 +41,7 @@ class FfmpegCustom < Formula
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
-  depends_on "texinfo" => :build
-
+  depends_on "gcc" if OS.linux?
   depends_on "lame"
   depends_on "libvorbis"
   depends_on "libvpx"
@@ -96,13 +95,14 @@ class FfmpegCustom < Formula
   conflicts_with "ffmpeg",
     because: "ffmpeg-custom and ffmpeg both install ffmpeg binary"
 
+  fails_with gcc: "5"
+
   def install
     args = %W[
       --prefix=#{prefix}
       --enable-shared
       --enable-pthreads
       --enable-version3
-      --enable-avresample
       --cc=#{ENV.cc}
       --host-cflags=#{ENV.cflags}
       --host-ldflags=#{ENV.ldflags}
@@ -127,6 +127,8 @@ class FfmpegCustom < Formula
       args << "--enable-videotoolbox"
     end
 
+    args << "--enable-neon" if Hardware::CPU.arm?
+
     args << "--disable-htmlpages"
     args << "--enable-libaom" if build.with? "aom"
     args << "--enable-chromaprint" if build.with? "chromaprint"
@@ -146,7 +148,6 @@ class FfmpegCustom < Formula
     args << "--enable-libsoxr" if build.with? "libsoxr"
     args << "--enable-libssh" if build.with? "libssh"
     args << "--enable-libvidstab" if build.with? "libvidstab"
-    args << "--enable-libvmaf" if build.with? "libvmaf"
     args << "--enable-libxml2" if build.with? "libxml2"
     args << "--enable-libopenh264" if build.with? "openh264"
     args << "--enable-openssl" if build.with? "openssl"
@@ -186,6 +187,17 @@ class FfmpegCustom < Formula
       args << ("--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp)
     end
 
+    if build.with? "libvmaf"
+      args << "--enable-libvmaf"
+      unless build.head?
+        %w[doc/filters.texi libavfilter/vf_libvmaf.c].each do |f|
+          inreplace f, "/usr/local/share/model", HOMEBREW_PREFIX/"share/libvmaf/model"
+          # Since libvmaf v2.0.0, `.pkl` model files have been deprecated in favor of `.json` model files.
+          inreplace f, "vmaf_v0.6.1.pkl", "vmaf_v0.6.1.json"
+        end
+      end
+    end
+
     system "./configure", *args
     system "make", "install"
 
@@ -195,13 +207,6 @@ class FfmpegCustom < Formula
 
     # Fix for Non-executables that were installed to bin/
     mv bin/"python", share/"python", force: true
-
-    if build.with? "tesseract"
-      opoo <<~EOS
-        The default `tesseract` dependency includes limited language support.
-        To add all supported languages, install the `tesseract-lang` formula.
-      EOS
-    end
   end
 
   test do
