@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/v8.2.4450.tar.gz"
-  sha256 "b0a5acbe83bbdd4b1412abd9dc2ae2e3593c6cff8ff11c551fda3e6e2a87ec81"
+  url "https://github.com/vim/vim/archive/v8.2.4800.tar.gz"
+  sha256 "2133aa2608446d9914feb4efd8b7eaae145e6cc2f2b333652b004a62d7d07948"
   head "https://github.com/vim/vim.git", branch: "master"
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
