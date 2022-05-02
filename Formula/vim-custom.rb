@@ -6,6 +6,12 @@ class VimCustom < Formula
   sha256 "e4f126af0803e6e88964000f4eebc2a06adbd28fa855cf93b3bc025c17cf13da"
   head "https://github.com/vim/vim.git", branch: "master"
 
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-8.2.4850"
+    sha256 big_sur:      "ec104f96f24b54652f8a58bfc20e044fc6720bbfb7488f9b0ded5f9417ce6043"
+    sha256 x86_64_linux: "c161b227038f46367b0ed871e54454935b80ebae612b5b302dd8232ccb0dbc9f"
+  end
+
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
