@@ -22,6 +22,12 @@ class ClangFormatAT13 < Formula
     regex(%r{href=.*?/tag/llvmorg[._-]v?(\d+(?:\.\d+)+)}i)
   end
 
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/clang-format@13-13.0.1"
+    sha256 cellar: :any_skip_relocation, big_sur:      "4690529113bad75f7bb6d01c85df76826cb7dca93066ba6ef52793a7d5caa49e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "8704ba1657e5832ad5e06ed4e966b0591e41367e4cccec7b0b70cc2e0d3cd65d"
+  end
+
   depends_on "cmake" => :build
   depends_on "ninja" => :build
 
