@@ -11,6 +11,12 @@ class FfmpegCustom < Formula
     regex(/href=.*?ffmpeg[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-5.1"
+    sha256 big_sur:      "70df37478b946a9ce12255a0b582b83531d6ca26bfa0b4606658c67e40f061e1"
+    sha256 x86_64_linux: "d9f8664414d0c536b8a45bad507e001c0cb02890a24ebfffff5d383131710ea6"
+  end
+
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
   option "with-decklink", "Enable DeckLink support"
   option "with-fdk-aac", "Enable the Fraunhofer FDK AAC library"
