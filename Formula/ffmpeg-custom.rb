@@ -1,8 +1,8 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-5.0.1.tar.xz"
-  sha256 "ef2efae259ce80a240de48ec85ecb062cecca26e4352ffb3fda562c21a93007b"
+  url "https://ffmpeg.org/releases/ffmpeg-5.1.tar.xz"
+  sha256 "55eb6aab5ee235550fa54a33eaf8bf1b4ec66c01453182b12f6a993d75698b03"
   license "GPL-2.0-or-later"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
@@ -41,11 +41,9 @@ class FfmpegCustom < Formula
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
-  depends_on "gcc" if OS.linux?
   depends_on "lame"
   depends_on "libvorbis"
   depends_on "libvpx"
-  depends_on "libxv" if OS.linux?
   depends_on "opus"
   depends_on "sdl2"
   depends_on "snappy"
@@ -91,6 +89,12 @@ class FfmpegCustom < Formula
 
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "alsa-lib"
+    depends_on "libxv"
+    depends_on "gcc" # because rubberband is compiled with gcc
+  end
 
   conflicts_with "ffmpeg",
     because: "ffmpeg-custom and ffmpeg both install ffmpeg binary"
@@ -187,16 +191,7 @@ class FfmpegCustom < Formula
       args << ("--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp)
     end
 
-    if build.with? "libvmaf"
-      args << "--enable-libvmaf"
-      unless build.head?
-        %w[doc/filters.texi libavfilter/vf_libvmaf.c].each do |f|
-          inreplace f, "/usr/local/share/model", HOMEBREW_PREFIX/"share/libvmaf/model"
-          # Since libvmaf v2.0.0, `.pkl` model files have been deprecated in favor of `.json` model files.
-          inreplace f, "vmaf_v0.6.1.pkl", "vmaf_v0.6.1.json"
-        end
-      end
-    end
+    args << "--enable-libvmaf" if build.with? "libvmaf"
 
     system "./configure", *args
     system "make", "install"
