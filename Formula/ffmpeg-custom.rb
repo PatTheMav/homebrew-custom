@@ -98,8 +98,8 @@ class FfmpegCustom < Formula
 
   on_linux do
     depends_on "alsa-lib"
-    depends_on "libxv"
-    depends_on "gcc" # because rubberband is compiled with gcc
+    depends_on "gcc"
+    depends_on "libxv" # because rubberband is compiled with gcc
   end
 
   conflicts_with "ffmpeg",
