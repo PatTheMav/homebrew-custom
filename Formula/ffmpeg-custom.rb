@@ -12,9 +12,9 @@ class FfmpegCustom < Formula
   end
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-5.1"
-    sha256 big_sur:      "70df37478b946a9ce12255a0b582b83531d6ca26bfa0b4606658c67e40f061e1"
-    sha256 x86_64_linux: "d9f8664414d0c536b8a45bad507e001c0cb02890a24ebfffff5d383131710ea6"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-5.1.1"
+    sha256 big_sur:      "4653d0411f0a72d1094aa1d978e7e6e88c4fe907bb7ce51f6341c909b3d4fef2"
+    sha256 x86_64_linux: "7a545c7ecdb01c84ff30f163830630b0cf7eae50c1b151b8eb003d44d17294e0"
   end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
