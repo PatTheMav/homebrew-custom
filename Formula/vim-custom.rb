@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/v9.0.0750.tar.gz"
-  sha256 "7fa6b8f36fbe972dd369af91d92340d9aa247a812ae856e1795802920a906edf"
+  url "https://github.com/vim/vim/archive/v9.0.0950.tar.gz"
+  sha256 "c53542fbec58362c3a5ed60a0fe5aa219ef49cd15d9545311ec0f6d1f03e2fdd"
   head "https://github.com/vim/vim.git", branch: "master"
 
   bottle do
@@ -20,7 +20,7 @@ class VimCustom < Formula
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
-  depends_on "python@3.9" => :optional
+  depends_on "python@3.10" => :optional
   depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
