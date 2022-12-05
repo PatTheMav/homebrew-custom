@@ -7,9 +7,9 @@ class VimCustom < Formula
   head "https://github.com/vim/vim.git", branch: "master"
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-9.0.0950"
-    sha256 monterey:     "7763313fd1128da3ed7fd8b6e4f20d967de6eb7a60fe8eac0d3b11ad967b1d00"
-    sha256 x86_64_linux: "5da362077c2455017d468c645f3e19921beca363c165a58b1098ee963a98749f"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-9.0.1000"
+    sha256 monterey:     "936d4e065a0a1146e5f652d1807d29795daca03ec64aac92c13cd3f371bad61c"
+    sha256 x86_64_linux: "13a2b1b505c3ad467b4bc0b5b415d33bce4bee7fdd23989bb90b3d4074a02ac2"
   end
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
