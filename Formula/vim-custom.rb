@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/v9.0.1300.tar.gz"
-  sha256 "3ddec0c67ac5a8bc905a5bc2cd2d9272ddbeddf57ed0964c1f1c489f3c80c4f5"
+  url "https://github.com/vim/vim/archive/v9.0.1450.tar.gz"
+  sha256 "432373dd7c5eb5f8c8b9ea5b9d98c0ac73d7ccdb8c4f4076310a5353692e8fe5"
   head "https://github.com/vim/vim.git", branch: "master"
 
   bottle do
@@ -13,14 +13,16 @@ class VimCustom < Formula
   end
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
+  option "with-libsodium", "Build with libsodium for encrypted file support"
   option "with-client-server", "Enable client/server mode"
 
   depends_on "ncurses"
   depends_on "gettext" => :optional
+  depends_on "libsodium" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
-  depends_on "python@3.10" => :optional
+  depends_on "python@3.11" => :optional
   depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
@@ -44,7 +46,7 @@ class VimCustom < Formula
     opts << "--disable-selinux" if OS.linux?
 
     if build.with? "python"
-      ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
+      ENV.prepend_path "PATH", Formula["python@3.11"].opt_libexec/"bin"
       opts << "--enable-python3interp" if build.with? "python"
     end
 
@@ -110,5 +112,6 @@ class VimCustom < Formula
       assert_equal "hello python3", File.read("test.txt").chomp
     end
     assert_match "+gettext", shell_output("#{bin}/vim --version") if build.with? "gettext"
+    assert_match "+sodium", shell_output("#{bin}/vim --version") if build.with? "libsodium"
   end
 end
