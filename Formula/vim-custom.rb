@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/v9.0.1900.tar.gz"
-  sha256 "c631c375565fb35c2e37bd0aea6aa79c0b25391ce3e9b093321876fa5dd47f66"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.0.2050.tar.gz"
+  sha256 "0387014cba4283d55e3b6611b7b574c81670fbb5d195d0fc7b264b94e95592e3"
   head "https://github.com/vim/vim.git", branch: "master"
 
   bottle do
@@ -22,7 +22,7 @@ class VimCustom < Formula
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
-  depends_on "python@3.11" => :optional
+  depends_on "python@3.12" => :optional
   depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
@@ -46,7 +46,7 @@ class VimCustom < Formula
     opts << "--disable-selinux" if OS.linux?
 
     if build.with? "python"
-      ENV.prepend_path "PATH", Formula["python@3.11"].opt_libexec/"bin"
+      ENV.prepend_path "PATH", Formula["python@3.12"].opt_libexec/"bin"
       opts << "--enable-python3interp" if build.with? "python"
     end
 
