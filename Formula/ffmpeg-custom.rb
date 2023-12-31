@@ -1,8 +1,8 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz"
-  sha256 "57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082"
+  url "https://ffmpeg.org/releases/ffmpeg-6.1.1.tar.xz"
+  sha256 "8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968"
   license "GPL-2.0-or-later"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
@@ -21,6 +21,7 @@ class FfmpegCustom < Formula
   option "with-decklink", "Enable DeckLink support"
   option "with-fdk-aac", "Enable the Fraunhofer FDK AAC library"
   option "with-game-music-emu", "Enable Game Music Emu (GME) support"
+  option "with-harfbuzz", "Enable harfbuzz libbrary"
   option "with-librsvg", "Enable SVG files as inputs via librsvg"
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-libssh", "Enable SFTP protocol via libssh"
@@ -64,6 +65,7 @@ class FfmpegCustom < Formula
   depends_on "freetype" => :optional
   depends_on "frei0r" => :optional
   depends_on "game-music-emu" => :optional
+  depends_on "harfbuzz" => :optional
   depends_on "libass" => :optional
   depends_on "libbluray" => :optional
   depends_on "libbs2b" => :optional
@@ -142,6 +144,7 @@ class FfmpegCustom < Formula
     args << "--disable-htmlpages"
     args << "--enable-libaom" if build.with? "aom"
     args << "--enable-chromaprint" if build.with? "chromaprint"
+    args << "--enable-libharfbuzz" if build.with? "harfbuzz"
     args << "--enable-libdav1d" if build.with? "dav1d"
     args << "--enable-libfdk-aac" if build.with? "fdk-aac"
     args << "--enable-libfontconfig" if build.with? "fontconfig"
