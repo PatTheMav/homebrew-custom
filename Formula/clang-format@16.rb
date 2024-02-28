@@ -15,9 +15,10 @@ class ClangFormatAT16 < Formula
   end
 
   bottle do
-    root_url "https://github.com/obsproject/homebrew-tools/releases/download/clang-format@16-16.0.5"
-    sha256 cellar: :any_skip_relocation, monterey:     "2c35bd417f773bcb5169cf330c9e069c6ffd1595004c6fa0dda5599184ba0660"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "c21cd67c53be91b135f6fff7bd8301f83a5f96161c496ec3f491947da7b0dbe3"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/clang-format@16-16.0.5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "9c578fcb4bd91a05830ea1891587700af4f7a57db606bb5408c480597f8a8228"
+    sha256 cellar: :any_skip_relocation, ventura:      "7ca41cdc742b7d5213ff7596bd90cb4aa4ac51f90983ae21424bae64ea0360a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "d57f42a4a1371fa7dd492b64eefc1ccb2bbdfae8947be1b22d2f77ec2084a0c4"
   end
 
   depends_on "cmake" => :build
