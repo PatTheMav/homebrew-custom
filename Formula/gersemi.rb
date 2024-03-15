@@ -6,6 +6,13 @@ class Gersemi < Formula
   url "https://files.pythonhosted.org/packages/20/2c/d53c35fe23718bd5fd19c97b46731042160712398200bb5232dbb38e31e9/gersemi-0.11.1.tar.gz"
   sha256 "3b77b0b7dd8b21ef09daa07a598ebaf7a833254b096b2126db0c17f86e35dc39"
 
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/gersemi-0.11.1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "8fda72818b612615fb33f0cb2672bdfa9dee6ca931c951717b1e9e4eb711e93c"
+    sha256 cellar: :any_skip_relocation, ventura:      "f33f0ea5def9520e723c6f49cd043d0031f2de0b2d42fe0cc9822d29fdb864f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "8670a46de266a6b353cd600ca19213a4d46b4f94ffb03c114f801cc65f9c00e8"
+  end
+
   depends_on "python@3.12"
   depends_on "pyyaml"
 
