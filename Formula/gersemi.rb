@@ -3,8 +3,10 @@ class Gersemi < Formula
 
   desc "Formatter to make your CMake code the real treasure"
   homepage "https://github.com/BlankSpruce/gersemi"
-  url "https://files.pythonhosted.org/packages/20/2c/d53c35fe23718bd5fd19c97b46731042160712398200bb5232dbb38e31e9/gersemi-0.11.1.tar.gz"
-  sha256 "3b77b0b7dd8b21ef09daa07a598ebaf7a833254b096b2126db0c17f86e35dc39"
+  url "https://files.pythonhosted.org/packages/44/22/86fecb254714c5b8e49a2c9cbcd86385175e0c7963c116592c07fc03b1c1/gersemi-0.12.0.tar.gz"
+  sha256 "c0446a7190061dbcd4990e1d4a958124660972801559ca0e61316a5a805ff35e"
+
+  head "https://github.com/BlankSpruce/gersemi.git", branch: "master"
 
   bottle do
     root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/gersemi-0.11.1"
@@ -33,7 +35,5 @@ class Gersemi < Formula
 
   def install
     virtualenv_install_with_resources
-    base_dumper = prefix/"libexec/lib/python3.12/site-packages/gersemi/base_dumper.py"
-    inreplace base_dumper, /indent_size = 4/, "indent_size = 2"
   end
 end
