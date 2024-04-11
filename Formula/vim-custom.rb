@@ -2,9 +2,27 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/refs/tags/v9.1.0100.tar.gz"
-  sha256 "b2fe9e2849eded2bf15603c032bcd7a4f375a743be686330b7fa8e598c416766"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.1.0300.tar.gz"
+  sha256 "d687bddb6145adf8fd3630c74a974ee1875254a41e14ef9192d4e6b9a3de73e2"
+  license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
+
+  # The Vim repository contains thousands of tags and the `Git` strategy isn't
+  # ideal in this context. This is an exceptional situation, so this checks the
+  # first 50 tags using the GitHub API (to minimize data transfer).
+  livecheck do
+    url "https://api.github.com/repos/vim/vim/tags?per_page=50"
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :json do |json, regex|
+      json.map do |tag|
+        match = tag["name"]&.match(regex)
+        next if match.blank?
+
+        match[1]
+      end
+    end
+    throttle 50
+  end
 
   bottle do
     root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-9.1.0100"
