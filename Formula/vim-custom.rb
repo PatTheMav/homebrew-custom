@@ -25,10 +25,10 @@ class VimCustom < Formula
   end
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-9.1.0100"
-    sha256 arm64_sonoma: "3be5fc3332e1edc0621d0aefdd7aad2dafbeeef547fed6133f87d34b8ab3feec"
-    sha256 ventura:      "38c00d6e3bab45bf348882aa469201c3bd59e9181fe226d21eda4c831debc56c"
-    sha256 x86_64_linux: "f529f89ffb63b35ab29f5ae4fbcf34ae61b425015da5cfe6ec50dca9545e8c0d"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-9.1.0300"
+    sha256 arm64_sonoma: "ea55baf7fbc66fc53f8f2d439f4e3e78260c901394351b4d66f136c0eb50c844"
+    sha256 ventura:      "60d572e6b301cc0e6a51389c6c823f1bad4c9333621dbe3e6a2f5d24365e7cbf"
+    sha256 x86_64_linux: "043024a903d8b880645f7114f318276cf12cff0982ff2c012e6f8fecb21d0ee2"
   end
 
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
