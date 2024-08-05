@@ -1,8 +1,8 @@
 class FfmpegCustom < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-7.0.1.tar.xz"
-  sha256 "bce9eeb0f17ef8982390b1f37711a61b4290dc8c2a0c1a37b5857e85bfb0e4ff"
+  url "https://ffmpeg.org/releases/ffmpeg-7.0.2.tar.xz"
+  sha256 "8646515b638a3ad303e23af6a3587734447cb8fc0a0c064ecdb8e95c4fd8b389"
   license "GPL-2.0-or-later"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
@@ -99,9 +99,16 @@ class FfmpegCustom < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libogg"
+  end
+
   on_linux do
     depends_on "alsa-lib"
     depends_on "gcc"
+    depends_on "libx11"
+    depends_on "libxcb"
+    depends_on "libxext"
     depends_on "libxv" # because rubberband is compiled with gcc
   end
 
@@ -180,11 +187,9 @@ class FfmpegCustom < Formula
     args << "--enable-libopenh264" if build.with? "openh264"
     args << "--enable-openssl" if build.with? "openssl"
     args << "--enable-librav1e" if build.with? "rav1e"
-    args << "--enable-librubberband" if build.with? "rubberband"
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libsrt" if build.with? "srt"
     args << "--enable-librist" if build.with? "librist"
-    args << "--enable-libtesseract" if build.with? "tesseract"
     args << "--enable-libtwolame" if build.with? "two-lame"
     args << "--enable-libwavpack" if build.with? "wavpack"
     args << "--enable-libwebp" if build.with? "webp"
@@ -215,6 +220,15 @@ class FfmpegCustom < Formula
       args << ("--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp)
     end
 
+    if build.with? "rubberband"
+      args << "--enable-librubberband"
+      depends_on "libsamplerate" if OS.mac?
+    end
+
+    if build.with? "tesseract"
+      args << "--enable-libtesseract"
+      depends_on "libarchive" if OS.mac?
+    end
     args << "--enable-libvmaf" if build.with? "libvmaf"
 
     system "./configure", *args
