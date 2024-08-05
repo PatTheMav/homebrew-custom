@@ -5,6 +5,7 @@ class Gersemi < Formula
   homepage "https://github.com/BlankSpruce/gersemi"
   url "https://files.pythonhosted.org/packages/70/e7/a6ba718877a95fbd91b3249c76f2e2a5e399b7e3fb2333f34363c12ef3b7/gersemi-0.15.0.tar.gz"
   sha256 "b2e40e38fc46aff8e15331f9331e513b45d615087e4616c92a2a792d59c87c09"
+  revision 1
 
   head "https://github.com/BlankSpruce/gersemi.git", branch: "master"
 
@@ -15,8 +16,8 @@ class Gersemi < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux: "e55018ca4a7bd316bb5aa29389423df3a9177b3ac8d688f4db6520675e020e42"
   end
 
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
 
   resource "appdirs" do
     url "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz"
@@ -31,6 +32,11 @@ class Gersemi < Formula
   resource "lark" do
     url "https://files.pythonhosted.org/packages/2c/e1/804b6196b3fbdd0f8ba785fc62837b034782a891d6f663eea2f30ca23cfa/lark-1.1.9.tar.gz"
     sha256 "15fa5236490824c2c4aba0e22d2d6d823575dcaf4cdd1848e34b6ad836240fba"
+  end
+
+  resource "PyYAML" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
   end
 
   def install
