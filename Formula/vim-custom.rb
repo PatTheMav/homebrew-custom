@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/refs/tags/v9.1.0750.tar.gz"
-  sha256 "6d668be3da4ab41081b2b9d935f41d066e6002c8c72e23e37e0c5363c9da977b"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.1.0850.tar.gz"
+  sha256 "4bbd7480c2d5c577a77a070fa4a133e057c37f611adf47d9a317e50244d7caa4"
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
@@ -40,7 +40,7 @@ class VimCustom < Formula
   depends_on "libsodium" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
-  depends_on "python@3.12" => :optional
+  depends_on "python@3.13" => :optional
   depends_on "ruby" => :optional
 
   uses_from_macos "perl"
@@ -65,12 +65,14 @@ class VimCustom < Formula
     # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
 
+    ENV.append_to_cflags "-mllvm -enable-constraint-elimination=0" if DevelopmentTools.clang_build_version == 1600
+
     opts = []
 
     opts << "--disable-selinux" if OS.linux?
 
     if build.with? "python"
-      ENV.prepend_path "PATH", Formula["python@3.12"].opt_libexec/"bin"
+      ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
       opts << "--enable-python3interp" if build.with? "python"
     end
 
