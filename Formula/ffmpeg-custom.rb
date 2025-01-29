@@ -13,10 +13,10 @@ class FfmpegCustom < Formula
   end
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-7.1"
-    sha256 arm64_sonoma: "0ac2a7c140616d336151828f1bfe3d410aca7e83a110fe3fdc14d871787af5dc"
-    sha256 ventura:      "46e02a79f0328472cee2e7a297615af0769d138c089a6838122504ca57eff7ab"
-    sha256 x86_64_linux: "803235622ec0a4d861bd997ec2bbcddc3fc4b5d35512fde5642c0f82e05682ca"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-7.1_1"
+    sha256 arm64_sonoma: "bef88a38658857ae6b8dae44b38009553f5bda97f1d9ed67116b8edd94f3c493"
+    sha256 ventura:      "6bb5d27158e46b9b69a177876ece3f37cbbffb1524c452a6f34ad012bd296016"
+    sha256 x86_64_linux: "6dd709fdab76883367b9f71af59e88876924cd8b636274296146e47627f517d9"
   end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
