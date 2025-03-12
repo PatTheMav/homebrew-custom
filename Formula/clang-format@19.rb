@@ -14,6 +14,13 @@ class ClangFormatAT19 < Formula
     strategy :github_latest
   end
 
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/clang-format@19-19.1.1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "bc1a57e89b67be3d60f67565d40f035267447a24bced772d11a22ea7a5d5bc4f"
+    sha256 cellar: :any_skip_relocation, ventura:      "2424b1ba41d774b1295a25fe45236af88de56a7e826072606108c3ca71853573"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "55d62eb39c7be4761308c8ee094fab451e8b239a81aeae3c3abe1820c9a75c37"
+  end
+
   depends_on "cmake" => :build
   depends_on "ninja" => :build
 
