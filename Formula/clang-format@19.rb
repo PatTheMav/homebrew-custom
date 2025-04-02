@@ -16,10 +16,10 @@ class ClangFormatAT19 < Formula
   end
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/clang-format@19-19.1.1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma: "bc1a57e89b67be3d60f67565d40f035267447a24bced772d11a22ea7a5d5bc4f"
-    sha256 cellar: :any_skip_relocation, ventura:      "2424b1ba41d774b1295a25fe45236af88de56a7e826072606108c3ca71853573"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "55d62eb39c7be4761308c8ee094fab451e8b239a81aeae3c3abe1820c9a75c37"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/clang-format@19-19.1.1_1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "66afe40caaf25229c037b9986a801702ed3047e4efc55e4a56c1a0934eb4069f"
+    sha256 cellar: :any_skip_relocation, ventura:      "045a4e5c53444b5782b356d0a74c0a251c148dfd852ef805df6e8aa1af6740c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "9d7f924e282b551dd65819bcc179f5fe5d78c0e4aec4cb2c0ab875573eb675d6"
   end
 
   depends_on "cmake" => :build
