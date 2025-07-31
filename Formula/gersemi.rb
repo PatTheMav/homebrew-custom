@@ -9,10 +9,10 @@ class Gersemi < Formula
   head "https://github.com/BlankSpruce/gersemi.git", branch: "master"
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/gersemi-0.15.0_1"
-    sha256 cellar: :any,                 arm64_sonoma: "fe13408f6b477a50215a0c26bcba5f79d3bc956bddf1762b16a687040a036f37"
-    sha256 cellar: :any,                 ventura:      "5d08c995510065fb1075cf912448b752423ed13ff04400fc10b7ad3dcbff1a42"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "f4780ad9e6764e5cec5a2249be21def4786ca03f09e224fe5fc4cb367135e743"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/gersemi-0.21.0"
+    sha256 cellar: :any,                 arm64_sequoia: "ee29daeedf2a4308015fbe25a9f51037fc4150c3c1faab54210b6268c4372476"
+    sha256 cellar: :any,                 arm64_sonoma:  "526bfa56febc268e68b5237cc8b516ae90ca1478d5b79220e6a0d57b41f24d7d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ac87bd3f07233f8c6632eb244e78866b8206ccd7e2053006cf65d79920cc78b"
   end
 
   depends_on "libyaml"
