@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/refs/tags/v9.1.1550.tar.gz"
-  sha256 "373f8478b7c285a9fbe18a62f18601736152ec425fbf1181af5a382a3f06bc76"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.1.1650.tar.gz"
+  sha256 "bab8a11ae35333221cffbca4518588bbe36604a5207135bf9f0d31579277960d"
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
@@ -46,7 +46,17 @@ class VimCustom < Formula
   uses_from_macos "perl"
 
   on_linux do
+    depends_on "acl" => :recommended if build.with? "libsodium"
+
     depends_on "perl" => :optional
+
+    on_arm do
+      depends_on "gcc" => :build
+      fails_with :gcc do
+        version "14"
+        cause "Generates illegal instructions when branch protection is enabled"
+      end
+    end
   end
 
   conflicts_with "ex-vi",
@@ -113,7 +123,7 @@ class VimCustom < Formula
                           "--with-compiledby=Homebrew",
                           "--enable-cscope",
                           "--enable-terminal",
-                          "--enable-gui=no",
+                          "--disable-gui",
                           "--without-x",
                           *opts
 
