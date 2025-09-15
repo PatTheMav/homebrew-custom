@@ -4,6 +4,7 @@ class FfmpegCustom < Formula
   url "https://ffmpeg.org/releases/ffmpeg-8.0.tar.xz"
   sha256 "b2751fccb6cc4c77708113cd78b561059b6fa904b24162fa0be2d60273d27b8e"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/FFmpeg/FFmpeg.git", branch: "master"
 
   livecheck do
@@ -32,8 +33,9 @@ class FfmpegCustom < Formula
   option "with-openh264", "Enable OpenH264 library"
   option "with-openjpeg", "Enable JPEG 2000 image format"
   option "with-openssl", "Enable SSL support"
-  option "with-rav1e", "Enable Rav1e AV1 video codec"
+  option "with-rav1e", "Enable Rav1e AV1 encoder"
   option "with-rubberband", "Enable rubberband library"
+  option "with-svt-av1", "Enable SVT-AV1 encoder"
   option "with-webp", "Enable using libwebp to encode WEBP images"
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
   option "with-zimg", "Enable z.lib zimg library"
@@ -87,6 +89,7 @@ class FfmpegCustom < Formula
   depends_on "rubberband" => :optional
   depends_on "speex" => :optional
   depends_on "srt" => :optional
+  depends_on "svt-av1" => :optional
   depends_on "tesseract" => :optional
   depends_on "two-lame" => :optional
   depends_on "wavpack" => :optional
@@ -190,6 +193,7 @@ class FfmpegCustom < Formula
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libsrt" if build.with? "srt"
     args << "--enable-librist" if build.with? "librist"
+    args << "--enable-libsvtav1" if build.with? "svt-av1"
     args << "--enable-libtwolame" if build.with? "two-lame"
     args << "--enable-libwavpack" if build.with? "wavpack"
     args << "--enable-libwebp" if build.with? "webp"
