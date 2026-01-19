@@ -64,6 +64,7 @@ class FfmpegCustom < Formula
   depends_on "x265"
 
   depends_on "aom" => :optional
+  depends_on "xz" if build.with?("aom") && OS.mac?
   depends_on "aribb24" => :optional
   depends_on "dav1d" => :optional
   depends_on "fdk-aac" => :optional
@@ -71,8 +72,10 @@ class FfmpegCustom < Formula
   depends_on "game-music-emu" => :optional
   depends_on "harfbuzz" => :optional
   depends_on "jpeg-xl" => :optional
+  depends_on "xz" if build.with?("jpeg-xl") && OS.mac?
   depends_on "libass" => :optional
   depends_on "libbluray" => :optional
+  depends_on "libogg" => :optional
   depends_on "libsoxr" => :optional
   depends_on "libssh" => :optional
   depends_on "libvidstab" => :optional
@@ -82,8 +85,10 @@ class FfmpegCustom < Formula
   depends_on "opencore-amr" => :optional
   depends_on "openh264" => :optional
   depends_on "openjpeg" => :optional
+  depends_on "xz" if build.with?("openjpeg") && OS.mac?
   depends_on "rav1e" => :optional
   depends_on "rubberband" => :optional
+  depends_on "libsamplerate" if build.with?("rubberband") && OS.mac?
   depends_on "snappy" => :optional
   depends_on "speex" => :optional
   depends_on "srt" => :optional
@@ -92,6 +97,7 @@ class FfmpegCustom < Formula
   depends_on "theora" => :optional
   depends_on "two-lame" => :optional
   depends_on "webp" => :optional
+  depends_on "xz" if build.with?("webp") && OS.mac?
   depends_on "xvid" => :optional
   depends_on "zeromq" => :optional
   depends_on "zimg" => :optional
@@ -104,6 +110,18 @@ class FfmpegCustom < Formula
     depends_on "alsa-lib"
     depends_on "libxcb"
     depends_on "xz"
+  end
+
+  if build.with? "libass"
+    depends_on "libx11" if OS.mac?
+    depends_on "libxcb" if OS.mac?
+  end
+
+  if build.with? "tesseract"
+    depends_on "libarchive" if OS.mac?
+    depends_on "libx11" if OS.mac?
+    depends_on "libxcb" if OS.mac?
+    depends_on "xz" if OS.mac?
   end
 
   on_intel do
@@ -142,20 +160,20 @@ class FfmpegCustom < Formula
     args += %w[--enable-videotoolbox --enable-audiotoolbox] if OS.mac?
     args << "--enable-neon" if Hardware::CPU.arm?
 
-    if build.with? "aom"
-      args << "--enable-libaom"
-      depends_on "xz" if OS.mac?
-    end
-
+    args << "--enable-libaom" if build.with? "aom"
     args << "--enable-libaribb24" if build.with? "aribb24"
     args << "--enable-libdav1d" if build.with? "dav1d"
     args << "--enable-frei0r" if build.with? "frei0r"
+    args << "--enable-libass" if build.with? "libass"
     args << "--enable-libharfbuzz" if build.with? "harfbuzz"
     args << "--enable-libgme" if build.with? "game-music-emu"
     args << "--enable-libbluray" if build.with? "libbluray"
+    args << "--enable-libjxl" if build.with? "jpeg-xl"
     args << "--enable-libopenh264" if build.with? "openh264"
+    args << "--enable-librubberband" if build.with? "rubberband"
     args << "--enable-libsoxr" if build.with? "libsoxr"
     args << "--enable-libssh" if build.with? "libssh"
+    args << "--enable-libtesseract" if build.with? "tesseract"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libvmaf" if build.with? "libvmaf"
     args << "--enable-libvorbis" if build.with? "libvorbis"
@@ -169,21 +187,12 @@ class FfmpegCustom < Formula
     args << "--enable-libxvid" if build.with? "xvid"
     args << "--enable-libzmq" if build.with? "zeromq"
     args << "--enable-libzimg" if build.with? "zimg"
-
-    if build.with? "libass"
-      args << "--enable-libass"
-      depends_on "libx11" if OS.mac?
-      depends_on "libxcb" if OS.mac?
-    end
+    args << "--enable-libtheora" if build.with? "theora"
+    args << "--enable-libwebp" if build.with? "webp"
 
     if build.with? "fdk-aac"
       args << "--enable-nonfree"
       args << "--enable-libfdk-aac"
-    end
-
-    if build.with? "jpeg-xl"
-      args << "--enable-libjxl"
-      depends_on "xz" if OS.mac?
     end
 
     if build.with? "opencore-amr"
@@ -195,31 +204,6 @@ class FfmpegCustom < Formula
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
       args << ("--extra-cflags=" + `pkg-config --cflags libopenjp2`.chomp)
-
-      depends_on "xz" if OS.mac?
-    end
-
-    if build.with? "rubberband"
-      args << "--enable-librubberband"
-      depends_on "libsamplerate" if OS.mac?
-    end
-
-    if build.with? "tesseract"
-      args << "--enable-libtesseract"
-      depends_on "libarchive" if OS.mac?
-      depends_on "libx11" if OS.mac?
-      depends_on "libxcb" if OS.mac?
-      depends_on "xz" if OS.mac?
-    end
-
-    if build.with? "theora"
-      args << "--enable-libtheora"
-      depends_on "libogg"
-    end
-
-    if build.with? "webp"
-      args << "--enable-libwebp"
-      depends_on "xz" if OS.mac?
     end
 
     system "./configure", *args
