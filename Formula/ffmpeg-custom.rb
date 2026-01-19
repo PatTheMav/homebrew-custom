@@ -11,6 +11,14 @@ class FfmpegCustom < Formula
     regex(/href=.*?ffmpeg[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-8.0.1"
+    sha256 arm64_tahoe:   "f9a71c0ca0cebdb6dcd585645fb837d1dfb0e8f59b051dbda23b462ce1cd8a85"
+    sha256 arm64_sequoia: "a48a02441dc05ee05be49ab5521ce845b039df74b31cf566ddd8c743d28b530a"
+    sha256 arm64_sonoma:  "7ef2b21dc7810adee181c27c95cd272ef4b6c702c118037d9f45a92107afab12"
+    sha256 x86_64_linux:  "de29f6f7f8fb18c88622a6f43a574bca3af90162567524f26be35d25d3821516"
+  end
+
   # Default in Homebrew-core, optional here
   option "with-aom", "Enable AOM AV1 video codec"
   option "with-aribb24", "Enable ARIB STD-824 decoder library"
