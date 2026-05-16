@@ -12,11 +12,11 @@ class FfmpegCustom < Formula
   end
 
   bottle do
-    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-8.0.1_1"
-    sha256 arm64_tahoe:   "d006213b2187f1857bbdd9e620e2ddbfd6b781daad31eeaf3d1e692cbd2f945f"
-    sha256 arm64_sequoia: "dd1f7aeb4e39e45af1baf6dc7281d702b034e739017e4e3f28a0aef68ec16dcf"
-    sha256 arm64_sonoma:  "3c9933d778d4074506ffd18824331876fcbc2dbcd8048c0f643a4bb8c0a91474"
-    sha256 x86_64_linux:  "5c99280696209d9b73ef90d78e2ab2fd262553c89fe66e6ef060e14c4cb9c851"
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/ffmpeg-custom-8.1.1"
+    sha256 arm64_tahoe:   "9dd5218f920eb7f774e8912aae950b8681f4e1ec6fcfb36df3f15f91a75af44c"
+    sha256 arm64_sequoia: "78a9001d0b7bcafcc439a6eeb860104ef8d117ce433c34c3876d48281e7fb49d"
+    sha256 arm64_sonoma:  "7a7a91a6556407dae213f8f43da13be175ee4af50c7dab52d4ea8fb0889d32f8"
+    sha256 x86_64_linux:  "c68b10dad4e536b31c1f41107b0fa9beefd4f2c9d8b8cfef9432ad583b2f98e0"
   end
 
   # Default in Homebrew-core, optional here
