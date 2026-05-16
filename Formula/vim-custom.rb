@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/refs/tags/v9.1.2050.tar.gz"
-  sha256 "d38a2cccdefc8bf11b417442a6a243c686548d1ef38e348d20d04dd6b6585911"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.2.0450.tar.gz"
+  sha256 "6811815aaa2c40d72837f62dce17d1cbc69def741863ae485d52396695453ad6"
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
@@ -47,6 +47,7 @@ class VimCustom < Formula
   uses_from_macos "perl"
 
   on_linux do
+    depends_on "acl" => :recommended if build.with? "gettext"
     depends_on "acl" => :recommended if build.with? "libsodium"
 
     depends_on "perl" => :optional
