@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/refs/tags/v9.2.0450.tar.gz"
-  sha256 "6811815aaa2c40d72837f62dce17d1cbc69def741863ae485d52396695453ad6"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.2.0650.tar.gz"
+  sha256 "de9be55e39f7da67b3871974952d7cf61bab9d362434d9ff22d46fb2855a6dac"
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
@@ -67,6 +67,9 @@ class VimCustom < Formula
   conflicts_with "macvim",
     because: "vim-custom and macvim both install vi* binaries"
 
+  conflicts_with "vim-classic",
+    because: "vim and vim-classic both install vi* binaries"
+
   conflicts_with "vim",
     because: "vim-custom and vim both install vi* binaries"
 
@@ -76,8 +79,6 @@ class VimCustom < Formula
 
     # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
-
-    ENV.append_to_cflags "-mllvm -enable-constraint-elimination=0" if DevelopmentTools.clang_build_version == 1600
 
     opts = []
 
@@ -116,8 +117,6 @@ class VimCustom < Formula
     # the right place (HOMEBREW_PREFIX/share/vim/{vimrc,vimfiles}) for
     # system vimscript files. We specify the normal installation prefix
     # when calling "make install".
-    # Homebrew will use the first suitable Perl & Ruby in your PATH if you
-    # build from source. Please don't attempt to hardcode either.
     system "./configure", "--prefix=#{HOMEBREW_PREFIX}",
                           "--mandir=#{man}",
                           "--enable-multibyte",
@@ -133,10 +132,7 @@ class VimCustom < Formula
     # Parallel install could miss some symlinks
     # https://github.com/vim/vim/issues/1031
     ENV.deparallelize
-    # If stripping the binaries is enabled, vim will segfault with
-    # statically-linked interpreters like ruby
-    # https://github.com/vim/vim/issues/114
-    system "make", "install", "prefix=#{prefix}", "STRIP=#{which "true"}"
+    system "make", "install", "prefix=#{prefix}"
     bin.install_symlink "vim" => "vi"
   end
 
