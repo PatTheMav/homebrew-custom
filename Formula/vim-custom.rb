@@ -7,6 +7,30 @@ class VimCustom < Formula
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
+  # The Vim repository contains thousands of tags and the `Git` strategy isn't
+  # ideal in this context. This is an exceptional situation, so this checks the
+  # first 50 tags using the GitHub API (to minimize data transfer).
+  livecheck do
+    url "https://api.github.com/repos/vim/vim/tags?per_page=50"
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :json do |json, regex|
+      json.map do |tag|
+        match = tag["name"]&.match(regex)
+        next if match.blank?
+
+        match[1]
+      end
+    end
+    throttle 50
+  end
+
+  bottle do
+    root_url "https://github.com/PatTheMav/homebrew-custom/releases/download/vim-custom-9.2.0650"
+    sha256 arm64_tahoe:   "2e95cc65603d6d031d293965f2fea37d3468b54a363d178e56445f8194887fdd"
+    sha256 arm64_sequoia: "8996b8ae6b832a291b51e5398cd6423998c4c54a55277deac6b12954d858628b"
+    sha256 x86_64_linux:  "95696848ccd317db0a7679b3379e6b69bcb2c12e45e4d1b4be846e996371845e"
+  end
+
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
