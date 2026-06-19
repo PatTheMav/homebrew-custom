@@ -4,23 +4,25 @@ on:
     branches:
       - master
   pull_request:
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   test-bot:
+    name: Brew Test-Bot
     strategy:
       matrix:
         os: [ubuntu-24.04, macos-15, macos-26]
     runs-on: ${{ matrix.os }}
     permissions:
-      actions: read
-      checks: read
       contents: read
-      pull-requests: read
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
         with:
-          token: ${{ secrets.HOMEBREW_API_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Homebrew Bundler RubyGems
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae
@@ -29,13 +31,17 @@ jobs:
           key: ${{ matrix.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ matrix.os }}-rubygems-
 
-      - run: brew test-bot --only-cleanup-before
+      - name: Cleanup Brew Test-Bot Environment
+        run: brew test-bot --only-cleanup-before
 
-      - run: brew test-bot --only-setup
+      - name: Setup Brew Test-Bot
+        run: brew test-bot --only-setup
 
-      - run: brew test-bot --only-tap-syntax
+      - name: Check Tap Syntax
+        run: brew test-bot --only-tap-syntax
 
-      - run: brew test-bot --only-formulae
+      - name: Check Formula
+        run: brew test-bot --only-formulae
         if: github.event_name == 'pull_request'
 
       - name: Upload bottles as artifact
