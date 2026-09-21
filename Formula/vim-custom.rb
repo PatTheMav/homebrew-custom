@@ -2,8 +2,8 @@ class VimCustom < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 25 releases on multiples of 25
-  url "https://github.com/vim/vim/archive/refs/tags/v9.2.0650.tar.gz"
-  sha256 "de9be55e39f7da67b3871974952d7cf61bab9d362434d9ff22d46fb2855a6dac"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.2.1100.tar.gz"
+  sha256 "01f855db1f2f61a626eae09e684ee1e585b7d954431d49b29eb0a06632436d72"
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
@@ -39,7 +39,7 @@ class VimCustom < Formula
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "perl" => :optional
-  depends_on "python@3.9" => :optional
+  depends_on "python@3.14" => :optional
   depends_on "ruby" => :optional
 
   conflicts_with "ex-vi",
@@ -54,6 +54,8 @@ class VimCustom < Formula
   conflicts_with "vim",
     because: "vim-custom and vim both install vi* binaries"
 
+  deny_network_access!
+
   def install
     # https://github.com/Homebrew/homebrew-core/pull/1046
     ENV.delete("SDKROOT")
@@ -66,7 +68,7 @@ class VimCustom < Formula
     opts << "--disable-selinux" if OS.linux?
 
     if build.with? "python"
-      ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
+      ENV.prepend_path "PATH", formula_opt_libexec("python@3.14")/"bin"
       opts << "--enable-python3interp" if build.with? "python"
     end
 
@@ -80,10 +82,8 @@ class VimCustom < Formula
 
       if build.with? "luajit"
         opts << "--with-luajit"
-        opts << "--with-lua-prefix=#{Formula["luajit"].opt_prefix}"
-      else
-        opts << "--with-lua-prefix=#{Formula["lua"].opt_prefix}"
       end
+      opts << "--with-lua-prefix=#{formula_opt_prefix("lua")}"
 
       if build.with?("lua") && build.with?("luajit")
         onoe <<~EOS
