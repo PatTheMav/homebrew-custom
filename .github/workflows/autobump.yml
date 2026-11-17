@@ -6,8 +6,8 @@ on:
     paths:
       - .github/workflows/autobump.yml
   schedule:
-    # Every day at 14:30 UTC
-    - cron: 30 14 * * *
+    # Every day at 10:30 UTC
+    - cron: 30 10 * * *
 permissions: {}
 defaults:
   run:
